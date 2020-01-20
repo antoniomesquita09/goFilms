@@ -8,17 +8,18 @@ import FilmItem from "../../components/FilmItem"
 
 export default function Search() {
   const [ films, setFilms ] = useState([]);
+  const [ title, setTitle ] = useState("");
 
   async function searchFilms(e) {
     e.preventDefault();
     const response = await api.get("/", {
       params: {
-        Title: "spiderman"
+        Title: title
       }
     });
 
     setFilms([...films, response.data]);
-    console.log(response)
+    setTitle("");
   }
 
   return (
@@ -32,7 +33,8 @@ export default function Search() {
               name="github_username"
               id="github_username"
               required
-              onChange={e => {}}
+              value={title}
+              onChange={e => {setTitle(e.target.value)}}
             />
           </div>
           <button type="submit">Buscar</button>
