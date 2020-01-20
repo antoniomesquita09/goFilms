@@ -18,3 +18,8 @@ main ul {
     width: 100%;
   }
 }
+
+main h4.loading {
+  text-align: center;
+  margin-top: 10px;
+}

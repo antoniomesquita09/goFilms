@@ -1,17 +1,26 @@
 import React from "react";
+
 import "./styles.css";
 
 export default function FilmItem({ film, main }) {
-  function addToStorage(item) {
-    const filmsArray = JSON.parse(localStorage.getItem("filmList"));
+  async function addToStorage(item) {
+    const filmsArray = await JSON.parse(localStorage.getItem("filmList"));
     if (!filmsArray) {
       const filmsArray = [];
       filmsArray.push(item);
-      localStorage.setItem("filmList", JSON.stringify(filmsArray));
+      await localStorage.setItem("filmList", JSON.stringify(filmsArray));
     } else {
       filmsArray.push(item);
-      localStorage.setItem("filmList", JSON.stringify(filmsArray));
+      await localStorage.setItem("filmList", JSON.stringify(filmsArray));
     }
+  }
+
+  async function removeToStorage(item) {
+    const filmsArray = await JSON.parse(localStorage.getItem("filmList"));
+    const newFilmArray = filmsArray.filter(function(el) {
+      return el.Title !== item.Title;
+    });
+    await localStorage.setItem("filmList", JSON.stringify(newFilmArray));
   }
 
   return (
@@ -28,11 +37,21 @@ export default function FilmItem({ film, main }) {
       </header>
       <p>Bio do filme</p>
       {!main ? (
-        <button type="button" onClick={() => addToStorage(film)}>
+        <button
+          type="button"
+          className="salve"
+          onClick={() => addToStorage(film)}
+        >
           Salvar
         </button>
       ) : (
-        <button>Remover</button>
+        <button
+          type="button"
+          className="delete"
+          onClick={() => removeToStorage(film)}
+        >
+          Remover
+        </button>
       )}
     </li>
   );

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 import api from "../../services/api";
 import "./SideBar.css";
@@ -9,6 +10,7 @@ import FilmItem from "../../components/FilmItem";
 export default function Search() {
   const [films, setFilms] = useState([]);
   const [title, setTitle] = useState("");
+  const [page, setPage] = useState(1);
 
   async function searchFilms(e) {
     e.preventDefault();
@@ -18,9 +20,10 @@ export default function Search() {
       }
     });
 
-    setFilms([...films, response.data.data]);
+    setFilms([...films, ...response.data.data]);
+    setTitle("");
   }
-
+  console.log(films);
   return (
     <div id="app">
       <div id="header">
@@ -46,8 +49,8 @@ export default function Search() {
       </div>
       <main>
         <ul>
-          {films[0]
-            ? films[0].map(film => <FilmItem key={film._id} film={film} />)
+          {films
+            ? films.map(film => <FilmItem key={film._id} film={film} />)
             : null}
         </ul>
       </main>
