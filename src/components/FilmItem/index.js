@@ -1,28 +1,12 @@
 import React from "react";
+import { useDispatch } from "react-redux"
 
+import { saveFilms, removeSavedFilms } from "../../states/modules/films"
 import "./styles.css";
 
 export default function FilmItem({ film, main }) {
-  async function addToStorage(item) {
-    const filmsArray = await JSON.parse(localStorage.getItem("filmList"));
-    if (!filmsArray) {
-      const filmsArray = [];
-      filmsArray.push(item);
-      await localStorage.setItem("filmList", JSON.stringify(filmsArray));
-    } else {
-      filmsArray.push(item);
-      await localStorage.setItem("filmList", JSON.stringify(filmsArray));
-    }
-  }
-
-  async function removeToStorage(item) {
-    const filmsArray = await JSON.parse(localStorage.getItem("filmList"));
-    const newFilmArray = filmsArray.filter(function(el) {
-      return el.Title !== item.Title;
-    });
-    await localStorage.setItem("filmList", JSON.stringify(newFilmArray));
-  }
-
+  const dispatch = useDispatch()
+  
   return (
     <li className="film-item">
       <header>
@@ -40,7 +24,7 @@ export default function FilmItem({ film, main }) {
         <button
           type="button"
           className="salve"
-          onClick={() => addToStorage(film)}
+          onClick={() => dispatch(saveFilms(film))}
         >
           Salvar
         </button>
@@ -48,7 +32,7 @@ export default function FilmItem({ film, main }) {
         <button
           type="button"
           className="delete"
-          onClick={() => removeToStorage(film)}
+          onClick={() => dispatch(removeSavedFilms(film))}
         >
           Remover
         </button>

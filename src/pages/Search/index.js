@@ -1,29 +1,26 @@
 import React, { useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { useSelector, useDispatch } from "react-redux"
+// import InfiniteScroll from "react-infinite-scroll-component";
 
-import api from "../../services/api";
+import { getFilms } from "../../states/modules/films"
 import "./SideBar.css";
 import "./Main.css";
 import "./index.css";
 import FilmItem from "../../components/FilmItem";
 
 export default function Search() {
-  const [films, setFilms] = useState([]);
   const [title, setTitle] = useState("");
-  const [page, setPage] = useState(1);
+  // const [page, setPage] = useState(1);
+  const dispatch = useDispatch()
+
+  const allFilms = useSelector(({films}) => films.films)
 
   async function searchFilms(e) {
     e.preventDefault();
-    const response = await api.get("/", {
-      params: {
-        Title: title
-      }
-    });
-
-    setFilms([...films, ...response.data.data]);
+    dispatch(getFilms(title));
     setTitle("");
   }
-  console.log(films);
+
   return (
     <div id="app">
       <div id="header">
@@ -49,8 +46,8 @@ export default function Search() {
       </div>
       <main>
         <ul>
-          {films
-            ? films.map(film => <FilmItem key={film._id} film={film} />)
+          {allFilms
+            ? allFilms.map(film => <FilmItem key={film._id} film={film} />)
             : null}
         </ul>
       </main>

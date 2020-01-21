@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux"
 
 import "./index.css";
+import { saveFilms } from "../../states/modules/films"
 import FilmItem from "../../components/FilmItem";
 
 export default function Main({ history }) {
-  const [films, setFilms] = useState([]);
+  const dispatch = useDispatch()
+
+  const savedFilms = useSelector(({films}) => films.savedFilms)
 
   useEffect(() => {
-    async function loadFilms() {
-      const storageFilms = await JSON.parse(localStorage.getItem("filmList"));
-
-      setFilms([...films, storageFilms]);
-    }
-    loadFilms();
-  }, [films]);
+    dispatch(saveFilms())
+  }, [dispatch]);
 
   return (
     <div id="app">
@@ -23,8 +22,8 @@ export default function Main({ history }) {
       </div>
       <main>
         <ul>
-          {films[0] ? (
-            films[0].map(film => <FilmItem main key={film.Title} film={film} />)
+          {savedFilms? (
+            savedFilms.map(film => <FilmItem main key={film.Title} film={film} />)
           ) : (
             <p>
               Você ainda não possui filmes salvos. Clique em "Buscar filmes"
