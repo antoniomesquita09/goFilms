@@ -1,16 +1,16 @@
-import React, {useState} from "react";
-import { useDispatch } from "react-redux"
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 
-import { saveFilms, removeSavedFilms } from "../../states/modules/films"
+import { saveFilms, removeSavedFilms } from "../../states/modules/films";
 import "./styles.css";
 
 export default function FilmItem({ film, main }) {
-  const [ disable, setDisable ] = useState(false)
-  const dispatch = useDispatch()
-  
+  const [disable, setDisable] = useState(false);
+  const dispatch = useDispatch();
+
   function handleSave(item) {
-    dispatch(saveFilms(item))
-    setDisable(true)
+    dispatch(saveFilms(item));
+    setDisable(true);
   }
 
   return (

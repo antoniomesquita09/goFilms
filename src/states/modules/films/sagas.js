@@ -1,4 +1,6 @@
 import { call, put, takeEvery, select } from "redux-saga/effects";
+import { toast } from "react-toastify";
+
 import api from "../../../services/api";
 
 import {
@@ -15,6 +17,8 @@ import {
   updateFilmsFailure,
   updateFilmsSuccess
 } from ".";
+
+toast.configure();
 
 export default function* rootSaga() {
   yield takeEvery(getFilms, listSaga);
@@ -62,15 +66,18 @@ function* saveSaga({ payload }) {
         filmsArray.push(payload);
         localStorage.setItem("filmList", JSON.stringify(filmsArray));
       }
+      toast.success("Filme Salvo!");
       yield put(getFilmsSuccess(filmsArray));
     } else {
       if (payload) {
         filmsArray.push(payload);
         localStorage.setItem("filmList", JSON.stringify(filmsArray));
+        toast.success("Filme Salvo!");
       }
       yield put(saveFilmsSuccess(filmsArray));
     }
   } catch (error) {
+    toast.error("Erro ao salvar o filme!");
     yield put(saveFilmsFailure(error.toString()));
   }
 }
@@ -82,8 +89,10 @@ function* removeSaga({ payload }) {
       return el.Title !== payload.Title;
     });
     localStorage.setItem("filmList", JSON.stringify(newFilmArray));
+    toast.warning("Filme removido!");
     yield put(removeSavedFilmsSuccess(newFilmArray));
   } catch (error) {
+    toast.error("Erro ao remover o filme!");
     yield put(removeSavedFilmsFailure(error.toString()));
   }
 }

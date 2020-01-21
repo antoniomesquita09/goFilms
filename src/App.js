@@ -1,9 +1,10 @@
-import React from 'react';
-import { Provider } from 'react-redux'
+import React from "react";
+import { Provider } from "react-redux";
+import "react-toastify/dist/ReactToastify.css";
 
 import "./Global.css";
-import store from './states/store'
-import Routes from './routes';
+import store from "./states/store";
+import Routes from "./routes";
 
 function App() {
   return (

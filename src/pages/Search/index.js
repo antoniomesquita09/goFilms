@@ -10,7 +10,6 @@ import FilmItem from "../../components/FilmItem";
 
 export default function Search() {
   const [title, setTitle] = useState("");
-  const [page, setPage] = useState(2);
   const dispatch = useDispatch();
 
   const allFilms = useSelector(({ films }) => films.films);
@@ -20,12 +19,10 @@ export default function Search() {
   function searchFilms(e) {
     e.preventDefault();
     dispatch(getFilms({ title }));
-    setPage(2);
   }
 
   function updateList() {
-    dispatch(updateFilms({ title, page }));
-    setPage(page + 1);
+    dispatch(updateFilms());
   }
 
   const observer = useRef(
