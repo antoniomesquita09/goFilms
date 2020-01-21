@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux"
-// import InfiniteScroll from "react-infinite-scroll-component";
+import React, { useState, useCallback, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import Loader from "react-loader-spinner";
 
-import { getFilms } from "../../states/modules/films"
+import { getFilms, updateFilms } from "../../states/modules/films";
 import "./SideBar.css";
 import "./Main.css";
 import "./index.css";
@@ -10,16 +10,43 @@ import FilmItem from "../../components/FilmItem";
 
 export default function Search() {
   const [title, setTitle] = useState("");
-  // const [page, setPage] = useState(1);
-  const dispatch = useDispatch()
+  const [page, setPage] = useState(2);
+  const dispatch = useDispatch();
 
-  const allFilms = useSelector(({films}) => films.films)
+  const allFilms = useSelector(({ films }) => films.films);
+  const totalPages = useSelector(({ films }) => films.totalPages);
+  const currentPage = useSelector(({ films }) => films.currentPage);
 
-  async function searchFilms(e) {
+  function searchFilms(e) {
     e.preventDefault();
-    dispatch(getFilms(title));
-    setTitle("");
+    dispatch(getFilms({ title }));
+    setPage(2);
   }
+
+  function updateList() {
+    dispatch(updateFilms({ title, page }));
+    setPage(page + 1);
+  }
+
+  const observer = useRef(
+    new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          updateList();
+        }
+      },
+      { threshold: 1 }
+    )
+  );
+
+  const infiniteRef = useCallback(
+    node => {
+      if (node !== null) {
+        observer.current.observe(node);
+      }
+    },
+    [observer]
+  );
 
   return (
     <div id="app">
@@ -35,6 +62,7 @@ export default function Search() {
                 id="title"
                 required
                 value={title}
+                autoFocus
                 onChange={e => {
                   setTitle(e.target.value);
                 }}
@@ -47,9 +75,22 @@ export default function Search() {
       <main>
         <ul>
           {allFilms
-            ? allFilms.map(film => <FilmItem key={film._id} film={film} />)
+            ? allFilms.map((film, index) => (
+                <FilmItem key={index} film={film} />
+              ))
             : null}
         </ul>
+        {totalPages > 1 && totalPages > currentPage ? (
+          <div className="loader-block" ref={infiniteRef}>
+            <Loader
+              type="Oval"
+              color="#7d40e7"
+              height={20}
+              width={20}
+              timeout={3000} //3 secs
+            />
+          </div>
+        ) : null}
       </main>
     </div>
   );

@@ -19,7 +19,8 @@ main ul {
   }
 }
 
-main h4.loading {
-  text-align: center;
-  margin-top: 10px;
+main div.loader-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

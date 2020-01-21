@@ -1,17 +1,23 @@
-import React from "react";
+import React, {useState} from "react";
 import { useDispatch } from "react-redux"
 
 import { saveFilms, removeSavedFilms } from "../../states/modules/films"
 import "./styles.css";
 
 export default function FilmItem({ film, main }) {
+  const [ disable, setDisable ] = useState(false)
   const dispatch = useDispatch()
   
+  function handleSave(item) {
+    dispatch(saveFilms(item))
+    setDisable(true)
+  }
+
   return (
     <li className="film-item">
       <header>
         <img
-          src="https://avatars2.githubusercontent.com/u/44874857?s=460&v=4"
+          src="https://cdn.pixabay.com/photo/2013/07/13/14/05/clapperboard-162084__340.png"
           alt="alt"
         />
         <div className="film-info">
@@ -24,7 +30,8 @@ export default function FilmItem({ film, main }) {
         <button
           type="button"
           className="salve"
-          onClick={() => dispatch(saveFilms(film))}
+          disabled={disable}
+          onClick={() => handleSave(film)}
         >
           Salvar
         </button>

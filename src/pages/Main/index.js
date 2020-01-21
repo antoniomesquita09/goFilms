@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux";
 
 import "./index.css";
-import { saveFilms } from "../../states/modules/films"
+import { saveFilms } from "../../states/modules/films";
 import FilmItem from "../../components/FilmItem";
 
 export default function Main({ history }) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const savedFilms = useSelector(({films}) => films.savedFilms)
+  const savedFilms = useSelector(({ films }) => films.savedFilms);
 
   useEffect(() => {
-    dispatch(saveFilms())
+    dispatch(saveFilms());
   }, [dispatch]);
 
   return (
@@ -22,8 +22,10 @@ export default function Main({ history }) {
       </div>
       <main>
         <ul>
-          {savedFilms? (
-            savedFilms.map(film => <FilmItem main key={film.Title} film={film} />)
+          {savedFilms ? (
+            savedFilms.map((film, index) => (
+              <FilmItem main key={index} film={film} />
+            ))
           ) : (
             <p>
               Você ainda não possui filmes salvos. Clique em "Buscar filmes"
