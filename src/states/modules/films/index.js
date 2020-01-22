@@ -15,14 +15,17 @@ const { actions, reducer } = createSlice({
   reducers: {
     getFilms: state => state,
     getFilmsFailure: state => state,
-    getFilmsSuccess: (state, { payload }) => {
+    getFilmsSuccess: (state, { payload }) =>
       extend(state, {
         films: payload.data.data,
         totalPages: payload.data.total_pages,
         currentPage: parseInt(payload.data.page),
         currentSearch: payload.title
-      });
-    },
+      }),
+    getSavedFilms: state => state,
+    getSavedFilmsFailure: state => state,
+    getSavedFilmsSuccess: (state, { payload }) =>
+      extend(state, { savedFilms: payload }),
     saveFilms: state => state,
     saveFilmsFailure: state => state,
     saveFilmsSuccess: (state, { payload }) =>
@@ -45,6 +48,9 @@ export const {
   getFilms,
   getFilmsFailure,
   getFilmsSuccess,
+  getSavedFilms,
+  getSavedFilmsFailure,
+  getSavedFilmsSuccess,
   saveFilms,
   saveFilmsFailure,
   saveFilmsSuccess,

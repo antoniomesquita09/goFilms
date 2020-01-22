@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "react-loader-spinner";
 
 import "./index.css";
-import { saveFilms } from "../../states/modules/films";
+import { getSavedFilms } from "../../states/modules/films";
 import FilmItem from "../../components/FilmItem";
 
 export default function Main({ history }) {
@@ -18,7 +18,7 @@ export default function Main({ history }) {
       : Math.floor(savedFilms.length / 10);
 
   useEffect(() => {
-    dispatch(saveFilms());
+    dispatch(getSavedFilms());
   }, [dispatch]);
 
   const observer = useRef(

@@ -7,6 +7,9 @@ import {
   getFilms,
   getFilmsSuccess,
   getFilmsFailure,
+  getSavedFilms,
+  getSavedFilmsFailure,
+  getSavedFilmsSuccess,
   saveFilms,
   saveFilmsFailure,
   saveFilmsSuccess,
@@ -22,6 +25,7 @@ toast.configure();
 
 export default function* rootSaga() {
   yield takeEvery(getFilms, listSaga);
+  yield takeEvery(getSavedFilms, getSavedSaga);
   yield takeEvery(saveFilms, saveSaga);
   yield takeEvery(removeSavedFilms, removeSaga);
   yield takeEvery(updateFilms, updateListSaga);
@@ -57,23 +61,35 @@ function* updateListSaga() {
   }
 }
 
+function* getSavedSaga() {
+  try {
+    if (localStorage.getItem("filmList") === null) {
+      const newFilmsArray = [];
+      localStorage.setItem("filmList", JSON.stringify(newFilmsArray));
+      yield put(getSavedFilmsSuccess(newFilmsArray));
+    } else {
+      const filmsArray = JSON.parse(localStorage.getItem("filmList"));
+      yield put(getSavedFilmsSuccess(filmsArray));
+    }
+  } catch (error) {
+    toast.error("Erro ao carregar os filmes salvos!");
+    yield put(getSavedFilmsFailure(error.toString()));
+  }
+}
+
 function* saveSaga({ payload }) {
   try {
-    const filmsArray = JSON.parse(localStorage.getItem("filmList"));
-    if (!filmsArray) {
-      const filmsArray = [];
-      if (payload) {
-        filmsArray.push(payload);
-        localStorage.setItem("filmList", JSON.stringify(filmsArray));
-      }
+    if (localStorage.getItem("filmList") === null) {
+      const newFilmsArray = [];
+      newFilmsArray.push(payload);
+      localStorage.setItem("filmList", JSON.stringify(newFilmsArray));
       toast.success("Filme Salvo!");
-      yield put(getFilmsSuccess(filmsArray));
+      yield put(saveFilmsSuccess(newFilmsArray));
     } else {
-      if (payload) {
-        filmsArray.push(payload);
-        localStorage.setItem("filmList", JSON.stringify(filmsArray));
-        toast.success("Filme Salvo!");
-      }
+      const filmsArray = JSON.parse(localStorage.getItem("filmList"));
+      filmsArray.push(payload);
+      localStorage.setItem("filmList", JSON.stringify(filmsArray));
+      toast.success("Filme Salvo!");
       yield put(saveFilmsSuccess(filmsArray));
     }
   } catch (error) {
