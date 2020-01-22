@@ -41,6 +41,8 @@ export default function Main({ history }) {
     [observer]
   );
 
+  let loadNewPage = totalPages > 1 && totalPages > currentPage;
+
   return (
     <div id="app">
       <div id="menu">
@@ -62,7 +64,7 @@ export default function Main({ history }) {
             </p>
           )}
         </ul>
-        {totalPages > 1 && totalPages > currentPage ? (
+        {loadNewPage ? (
           <div className="loader-block" ref={infiniteRef}>
             <Loader
               type="Oval"

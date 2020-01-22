@@ -1,24 +1,24 @@
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
-import createSagaMiddleware from 'redux-saga'
-import { all } from 'redux-saga/effects'
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import createSagaMiddleware from "redux-saga";
+import { all } from "redux-saga/effects";
 
-import films, { filmsSaga } from './modules/films'
+import films, { filmsSaga } from "./modules/films";
 
-const sagaMiddleware = createSagaMiddleware()
+const sagaMiddleware = createSagaMiddleware();
 
-const middleware = [...getDefaultMiddleware(), sagaMiddleware]
+const middleware = [...getDefaultMiddleware(), sagaMiddleware];
 
 const store = configureStore({
-	reducer: {
-		films,
-	},
-	middleware,
-})
+  reducer: {
+    films
+  },
+  middleware
+});
 
 const rootSaga = function*() {
-	yield all([filmsSaga()])
-}
+  yield all([filmsSaga()]);
+};
 
-sagaMiddleware.run(rootSaga)
+sagaMiddleware.run(rootSaga);
 
-export default store
+export default store;

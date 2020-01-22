@@ -15,6 +15,7 @@ export default function Search() {
   const allFilms = useSelector(({ films }) => films.films);
   const totalPages = useSelector(({ films }) => films.totalPages);
   const currentPage = useSelector(({ films }) => films.currentPage);
+  const currentSearch = useSelector(({ films }) => films.currentSearch);
 
   function searchFilms(e) {
     e.preventDefault();
@@ -44,6 +45,8 @@ export default function Search() {
     },
     [observer]
   );
+
+  let loadNewPage = totalPages > 1 && totalPages > currentPage;
 
   return (
     <div id="app">
@@ -77,7 +80,7 @@ export default function Search() {
               ))
             : null}
         </ul>
-        {totalPages > 1 && totalPages > currentPage ? (
+        {loadNewPage ? (
           <div className="loader-block" ref={infiniteRef}>
             <Loader
               type="Oval"
@@ -88,6 +91,7 @@ export default function Search() {
             />
           </div>
         ) : null}
+        {currentSearch && totalPages === 0 ? <p>Busca não encontrada</p> : null}
       </main>
     </div>
   );
