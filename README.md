@@ -15,6 +15,6 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 Hope you all enjoy it!
 
-You can also see this application in production: [Heroku](http://heroku.com)
+You can also see this application in production: [http://gofilms.herokuapp.com/](http://gofilms.herokuapp.com/)
 
 Any trouble running the project, call me in `LinkedIn`: [linkedin.com/in/antonio-mesquita-b51aa6183](http://linkedin.com/in/antonio-mesquita-b51aa6183)
